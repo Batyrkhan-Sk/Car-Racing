@@ -1,10 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
-interface Winner {
-  id: string;
-  wins: number;
-  time: number;
-}
+import { Winner } from '../types/winnerTypes';
 
 interface WinnerState {
   winners: Winner[];
@@ -30,7 +25,7 @@ const winnerSlice = createSlice({
         state.winners[index] = action.payload;
       }
     },
-    deleteWinner(state, action: PayloadAction<string>) {
+    deleteWinner(state, action: PayloadAction<number>) {
       state.winners = state.winners.filter((w) => w.id !== action.payload);
     },
   },

@@ -1,11 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
-interface RaceStatus {
-  id: string;
-  velocity: number;
-  distance: number;
-  status: 'idle' | 'started' | 'driving' | 'stopped' | 'broken';
-}
+import { RaceStatus } from '../types/raceTypes';
 
 interface RaceState {
   races: Record<string, RaceStatus>;

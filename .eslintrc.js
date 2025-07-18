@@ -21,5 +21,6 @@ module.exports = {
         ignorePropertyModificationsFor: ['state'], 
       },
     ],
+    'no-console': ['warn', { allow: ['warn', 'error'] }],
   },
 };

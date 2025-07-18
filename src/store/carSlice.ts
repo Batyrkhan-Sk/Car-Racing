@@ -1,10 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
-interface Car {
-  id: string;
-  name: string;
-  color: string;
-}
+import { Car } from '../types/carTypes';
 
 interface CarState {
   cars: Car[];
@@ -32,7 +27,7 @@ const carSlice = createSlice({
         state.cars[index] = action.payload;
       }
     },
-    deleteCar(state, action: PayloadAction<string>) {
+    deleteCar(state, action: PayloadAction<number>) {
       state.cars = state.cars.filter((car) => car.id !== action.payload);
     },
   },
