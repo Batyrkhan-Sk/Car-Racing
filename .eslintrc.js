@@ -12,7 +12,14 @@ module.exports = {
   },
   rules: {
     'max-lines-per-function': ['warn', { max: 40 }],
-    'no-magic-numbers': ['warn', { ignore: [0, 1], enforceConst: true }],
-    'react/react-in-jsx-scope': 'off', 
+    'no-magic-numbers': ['warn', { ignore: [0, 1, -1], enforceConst: true }],
+    'react/react-in-jsx-scope': 'off',
+    'no-param-reassign': [
+      'error',
+      {
+        props: true,
+        ignorePropertyModificationsFor: ['state'], 
+      },
+    ],
   },
 };
