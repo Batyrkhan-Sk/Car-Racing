@@ -1,8 +1,7 @@
 import { Car } from '../types/carTypes';
 import { setCars } from '../store/carSlice';
 import { AppDispatch } from '../store/store';
-
-const BASE_URL = 'http://127.0.0.1:3000';
+import BASE_URL from './constants';
 
 export const getCars = () => async (dispatch: AppDispatch) => {
   try {

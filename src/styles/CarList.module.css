@@ -1,0 +1,25 @@
+.carItem {
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.carName {
+  font-weight: bold;
+}
+
+.carBox {
+  width: 50px;
+  height: 25px;
+  margin-left: 10px;
+  transition: transform 0.5s linear;
+  background-color: grey;
+}
+
+.carBox.moving {
+  transform: translateX(100px);
+}

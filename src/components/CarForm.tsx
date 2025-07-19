@@ -28,11 +28,11 @@ export default function CarForm({
       <input type="color" value={color} onChange={(e) => setColor(e.target.value)} />
       {editId ? (
         <button type="button" onClick={handleUpdate}>
-          Update Car
+          Update
         </button>
       ) : (
         <button type="button" onClick={handleCreate}>
-          Create Car
+          Create
         </button>
       )}
     </div>

@@ -1,42 +1,56 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCars, deleteCar, createCar, updateCar } from '../api/cars';
 import { AppDispatch, RootState } from '../store/store';
 import CarForm from '../components/CarForm';
 import CarList from '../components/CarList';
+import { startCarEngine, stopCarEngine } from '../api/engine';
+import useCarForm from '../hooks/useCarForm';
 
 // eslint-disable-next-line max-lines-per-function
 export default function Garage() {
   const dispatch = useDispatch<AppDispatch>();
   const cars = useSelector((state: RootState) => state.car.cars);
-  const [name, setName] = useState('');
-  const [color, setColor] = useState('#000000');
-  const [editId, setEditId] = useState<number | null>(null);
+
+  const { name, color, editId, setName, setColor, setEditId, resetForm } = useCarForm();
 
   useEffect(() => {
     dispatch(getCars());
   }, [dispatch]);
 
   const handleDelete = (id: number) => dispatch(deleteCar(id));
+
   const handleCreate = () => {
     if (name && color) {
       dispatch(createCar(name, color));
-      setName('');
-      setColor('#000000');
+      resetForm();
     }
   };
+
   const handleEdit = (id: number, newName: string, newColor: string) => {
     setEditId(id);
     setName(newName);
     setColor(newColor);
   };
+
   const handleUpdate = () => {
     if (editId !== null && name && color) {
       dispatch(updateCar(editId, name, color));
+      resetForm();
       setEditId(null);
-      setName('');
-      setColor('#000000');
     }
+  };
+
+  const handleStartEngine = (id: number) => {
+    startCarEngine(id).catch((error) => {
+      console.error(`Failed to start engine for car ${id}:`, error);
+    });
+  };
+
+  const handleStopEngine = (id: number) => {
+    stopCarEngine(id).catch((error) => {
+      console.error(`Failed to stop engine for car ${id}:`, error);
+    });
   };
 
   return (
@@ -51,7 +65,13 @@ export default function Garage() {
         handleCreate={handleCreate}
         handleUpdate={handleUpdate}
       />
-      <CarList cars={cars} onDelete={handleDelete} onEdit={handleEdit} />
+      <CarList
+        cars={cars}
+        onDelete={handleDelete}
+        onEdit={handleEdit}
+        onStart={handleStartEngine}
+        onStop={handleStopEngine}
+      />
     </div>
   );
 }
