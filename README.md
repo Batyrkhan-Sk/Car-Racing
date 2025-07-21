@@ -8,15 +8,14 @@ A React + TypeScript web application that simulates a simple car racing game. Us
 - Start and stop car animations
 - Edit existing car details
 - Track race status and handle stop/reset actions
-- Modular CSS for styling components
+
 
 ## Tech Stack
 
-- React (with Hooks)
+- React 
 - TypeScript
-- Redux Toolkit (if used)
-- CSS Modules
-- Vite or Create React App (based on your setup)
+- Redux Toolkit
+- Create React App
 
 ## Getting Started
 
