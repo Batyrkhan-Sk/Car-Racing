@@ -1,6 +1,12 @@
-import { useState } from 'react';
+/* eslint-disable no-param-reassign */
+/* eslint-disable max-lines-per-function */
+import { useEffect, useRef } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import styles from '../styles/CarList.module.css';
 import { Car } from '../types/carTypes';
+import { RootState } from '../store/store';
+import { addFinisher } from '../store/winnerSlice';
+import saveWinner from '../api/saveWinner';
 
 interface CarListProps {
   cars: Car[];
@@ -10,45 +16,118 @@ interface CarListProps {
   onStop: (id: number) => void;
 }
 
-// eslint-disable-next-line max-lines-per-function
+interface Race {
+  status: 'started' | 'driving' | 'stopped' | 'broken';
+  distance: number;
+  velocity: number;
+}
+
+const isCarMoving = (races: Record<string, Race>, carId: number) => {
+  const race = races[carId.toString()];
+  return race && (race.status === 'started' || race.status === 'driving');
+};
+
 export default function CarList({ cars, onDelete, onEdit, onStart, onStop }: CarListProps) {
-  const [movingCars, setMovingCars] = useState<number[]>([]);
+  const races = useSelector((state: RootState) => state.race.races);
+  const dispatch = useDispatch();
+  const previousRacesRef = useRef<Record<string, Race>>({});
+  const winnerSavedRef = useRef(false);
 
-  const handleStart = (id: number) => {
-    onStart(id);
-    setMovingCars((prev) => [...prev, id]);
+  useEffect(() => {
+    const previousRaces = previousRacesRef.current;
+
+    const raceJustStarted = Object.values(races).some(
+      (r, i) =>
+        r.status === 'started' && previousRaces[Object.keys(races)[i]]?.status !== 'started',
+    );
+    if (raceJustStarted) {
+      winnerSavedRef.current = false;
+    }
+
+    Object.entries(races).forEach(([carId, race]) => {
+      const carElement = document.getElementById(`car-${carId}`);
+      if (!carElement) return;
+
+      const track = carElement.parentElement;
+      if (!track) return;
+
+      const trackWidth = track.offsetWidth;
+      const carWidth = carElement.offsetWidth;
+      const maxDistance = trackWidth - carWidth;
+      const effectiveDistance = Math.min(race.distance, maxDistance);
+      const time = effectiveDistance / race.velocity;
+
+      if (!previousRaces[carId] || previousRaces[carId].status !== race.status) {
+        switch (race.status) {
+          case 'started':
+          case 'driving':
+            carElement.style.transition = `transform ${time}s linear`;
+            // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+            carElement.offsetWidth;
+            carElement.style.transform = `translateX(${effectiveDistance}px) translateY(-50%)`;
+            carElement.addEventListener(
+              'transitionend',
+              () => {
+                const id = parseInt(carId, 10);
+                const formattedTime = Number(time.toFixed(2));
+                onStop(id);
+                dispatch(addFinisher({ id, time: formattedTime }));
+                if (!winnerSavedRef.current) {
+                  saveWinner(id, formattedTime);
+                  winnerSavedRef.current = true;
+                }
+              },
+              { once: true },
+            );
+            break;
+          case 'stopped':
+            carElement.style.transition = 'none';
+            carElement.style.transform = 'translateX(0) translateY(-50%)';
+            break;
+          case 'broken':
+            carElement.style.transition = 'none';
+            console.log(`Car ${carId} broke down`);
+            break;
+          default:
+            console.error(`Unexpected race status: ${race.status}`);
+            break;
+        }
+      }
+    });
+
+    previousRacesRef.current = { ...races };
+  }, [races, cars, onStop, dispatch]);
+
+  const renderCarItem = ({ id, name, color }: Car) => {
+    const isMoving = isCarMoving(races, id);
+
+    return (
+      <li key={id} className={styles.carItem}>
+        <div className={styles.carHeader}>
+          <span className={styles.carName}>
+            #{id} - {name}
+          </span>
+        </div>
+        <div className={styles.raceTrack}>
+          <div id={`car-${id}`} className={styles.carBox} style={{ backgroundColor: color }} />
+        </div>
+        <div className={styles.carControls}>
+          <button type="button" onClick={() => onDelete(id)} disabled={isMoving}>
+            Delete
+          </button>
+          <button type="button" onClick={() => onEdit(id, name, color)} disabled={isMoving}>
+            Edit
+          </button>
+          <button type="button" onClick={() => onStart(id)} disabled={isMoving}>
+            Start
+          </button>
+          <button type="button" onClick={() => onStop(id)} disabled={!isMoving}>
+            Stop
+          </button>
+        </div>
+      </li>
+    );
   };
 
-  const handleStop = (id: number) => {
-    onStop(id);
-    setMovingCars((prev) => prev.filter((carId) => carId !== id));
-  };
-
-  return (
-    <ul>
-      {cars.map((car) => (
-        <li key={car.id} className={styles.carItem}>
-          <span className={styles.carName}>{car.name}</span>
-          <div
-            className={`${styles.carBox} ${movingCars.includes(car.id) ? styles.moving : ''}`}
-            style={{ backgroundColor: car.color }}
-          />
-          <div>
-            <button type="button" onClick={() => onDelete(car.id)}>
-              Delete
-            </button>
-            <button type="button" onClick={() => onEdit(car.id, car.name, car.color)}>
-              Edit
-            </button>
-            <button type="button" onClick={() => handleStart(car.id)}>
-              Start
-            </button>
-            <button type="button" onClick={() => handleStop(car.id)}>
-              Stop
-            </button>
-          </div>
-        </li>
-      ))}
-    </ul>
-  );
+  return <ul className={styles.carList}>{cars.map(renderCarItem)}</ul>;
 }

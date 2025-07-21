@@ -21,6 +21,19 @@ const raceSlice = createSlice({
         status: 'started',
       };
     },
+    startMultipleRaces(
+      state,
+      action: PayloadAction<Array<{ id: string; velocity: number; distance: number }>>,
+    ) {
+      action.payload.forEach((raceData) => {
+        state.races[raceData.id] = {
+          id: raceData.id,
+          velocity: raceData.velocity,
+          distance: raceData.distance,
+          status: 'started',
+        };
+      });
+    },
     stopRace(state, action: PayloadAction<string>) {
       if (state.races[action.payload]) {
         state.races[action.payload].status = 'stopped';
@@ -42,5 +55,6 @@ const raceSlice = createSlice({
   },
 });
 
-export const { startRace, stopRace, driveRace, breakRace, resetRaces } = raceSlice.actions;
+export const { startRace, startMultipleRaces, stopRace, driveRace, breakRace, resetRaces } =
+  raceSlice.actions;
 export default raceSlice.reducer;

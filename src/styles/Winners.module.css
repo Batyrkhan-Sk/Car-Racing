@@ -1,0 +1,29 @@
+.container {
+  padding: 1rem;
+  text-align: center;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+th {
+  cursor: pointer;
+  padding: 0.5rem;
+  background: #f5f5f5;
+  border-bottom: 1px solid #ccc;
+}
+
+td {
+  padding: 0.5rem;
+  border-bottom: 1px solid #eee;
+}
+
+.pagination {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
