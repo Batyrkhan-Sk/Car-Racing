@@ -1,29 +1,79 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
 .container {
-  padding: 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: 'Inter', sans-serif;
+}
+
+.container h2 {
+  font-family: 'Orbitron', monospace;
+  font-size: 24px;
+  font-weight: 700;
+  color: #333;
+  margin: 0 0 20px 0;
   text-align: center;
 }
 
 .table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 1rem;
+  background: #fff;
+  border: 1px solid #ddd;
+  margin-bottom: 20px;
 }
 
-th {
+.table th {
+  background: #f8f9fa;
+  padding: 12px;
+  text-align: left;
+  font-weight: 600;
+  border-bottom: 2px solid #ddd;
   cursor: pointer;
-  padding: 0.5rem;
-  background: #f5f5f5;
-  border-bottom: 1px solid #ccc;
 }
 
-td {
-  padding: 0.5rem;
+.table th:hover {
+  background: #e9ecef;
+}
+
+.table td {
+  padding: 12px;
   border-bottom: 1px solid #eee;
 }
 
+.table tr:nth-child(even) {
+  background: #f9f9f9;
+}
+
+.carIcon {
+  font-size: 20px;
+  color: inherit;
+}
+
 .pagination {
-  margin-top: 1rem;
   display: flex;
   justify-content: center;
-  gap: 1rem;
+  align-items: center;
+  gap: 16px;
+}
+
+.pagination button {
+  padding: 8px 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pagination span {
+  font-weight: 500;
+  color: #333;
 }

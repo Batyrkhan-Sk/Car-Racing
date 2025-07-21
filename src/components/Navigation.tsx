@@ -1,9 +1,12 @@
 import { Link } from 'react-router-dom';
+import styles from '../styles/Navigation.module.css';
 
 export default function Navigation() {
   return (
-    <nav style={{ display: 'flex', gap: '1rem', marginBottom: '1rem' }}>
-      <Link to="/winners">Winners</Link>
+    <nav className={styles.nav}>
+      <Link to="/winners" className={styles.link}>
+        Winners
+      </Link>
     </nav>
   );
 }

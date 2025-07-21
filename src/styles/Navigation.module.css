@@ -1,0 +1,13 @@
+.nav {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.link {
+  text-decoration: none;
+  color: #1e90ff;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+}

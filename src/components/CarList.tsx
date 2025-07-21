@@ -1,7 +1,10 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable no-param-reassign */
 /* eslint-disable max-lines-per-function */
 import { useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCarSide } from '@fortawesome/free-solid-svg-icons';
 import styles from '../styles/CarList.module.css';
 import { Car } from '../types/carTypes';
 import { RootState } from '../store/store';
@@ -109,20 +112,22 @@ export default function CarList({ cars, onDelete, onEdit, onStart, onStop }: Car
           </span>
         </div>
         <div className={styles.raceTrack}>
-          <div id={`car-${id}`} className={styles.carBox} style={{ backgroundColor: color }} />
+          <div id={`car-${id}`} className={styles.carBox} style={{ color }}>
+            <FontAwesomeIcon icon={faCarSide} />
+          </div>
         </div>
         <div className={styles.carControls}>
           <button type="button" onClick={() => onDelete(id)} disabled={isMoving}>
-            Delete
+            Remove
           </button>
           <button type="button" onClick={() => onEdit(id, name, color)} disabled={isMoving}>
-            Edit
+            Select
           </button>
           <button type="button" onClick={() => onStart(id)} disabled={isMoving}>
-            Start
+            A
           </button>
           <button type="button" onClick={() => onStop(id)} disabled={!isMoving}>
-            Stop
+            B
           </button>
         </div>
       </li>

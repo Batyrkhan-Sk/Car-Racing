@@ -77,10 +77,33 @@ export default function RaceControls({ currentCars }: RaceControlsProps) {
 
   return (
     <div>
-      <button type="button" onClick={handleStartAll}>
+      <button
+        type="button"
+        onClick={handleStartAll}
+        style={{
+          padding: '5px 10px',
+          backgroundColor: '#7EC8E3',
+          color: 'white',
+          border: 'none',
+          borderRadius: '4px',
+          cursor: 'pointer',
+          marginRight: '10px',
+        }}
+      >
         Start All
       </button>
-      <button type="button" onClick={handleResetAll}>
+      <button
+        type="button"
+        onClick={handleResetAll}
+        style={{
+          padding: '5px 10px',
+          backgroundColor: '#FA26A0',
+          color: 'white',
+          border: 'none',
+          borderRadius: '4px',
+          cursor: 'pointer',
+        }}
+      >
         Reset
       </button>
     </div>

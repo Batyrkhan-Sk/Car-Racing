@@ -12,7 +12,7 @@ const fetchWinners = async (
 ) => {
   try {
     const response = await fetch(
-      `${BASE_URL}/winners?_page=${page}&_limit=${limit}&_sort=${sortBy}&_order=${sortOrder}`
+      `${BASE_URL}/winners?_page=${page}&_limit=${limit}&_sort=${sortBy}&_order=${sortOrder}`,
     );
 
     const data: Winner[] = await response.json();
