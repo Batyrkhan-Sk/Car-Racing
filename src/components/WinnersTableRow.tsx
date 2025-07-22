@@ -31,3 +31,7 @@ export default function WinnersTableRow({ winner, car }: WinnersTableRowProps) {
     </tr>
   );
 }
+
+WinnersTableRow.defaultProps = {
+  car: undefined,
+};
