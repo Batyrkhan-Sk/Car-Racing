@@ -2,7 +2,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCars, deleteCar, createCar, updateCar } from '../api/cars';
-import { startCarEngine, stopCarEngine } from '../api/engine';
+import { startCarEngine, stopCarEngine, driveCarEngine } from '../api/engine';
 import { AppDispatch, RootState } from '../store/store';
 import { startRace, stopRace, resetRaces } from '../store/raceSlice';
 import useCarForm from '../hooks/useCarForm';
@@ -15,8 +15,7 @@ import RaceControls from '../components/RaceControls';
 import WinnerModal from '../components/WinnerModal';
 import Pagination from '../components/Pagination';
 import styles from '../styles/Garage.module.css';
-
-const CARS_PER_PAGE = 10;
+import { CARS_PER_PAGE } from '../constants';
 
 export default function Garage() {
   const dispatch = useDispatch<AppDispatch>();
@@ -24,7 +23,6 @@ export default function Garage() {
   const { name, color, editId, setName, setColor, setEditId, resetForm } = useCarForm();
   const [currentPage, setCurrentPage] = useState(1);
 
-  // Reset race state when component mounts
   useEffect(() => {
     dispatch(resetRaces());
   }, [dispatch]);
@@ -81,14 +79,14 @@ export default function Garage() {
   }, [editId, name, color, dispatch, resetForm, setEditId]);
 
   const handleStartEngine = useCallback(
-    (id: number) => {
-      startCarEngine(id)
-        .then(({ velocity, distance }) => {
-          dispatch(startRace({ id: id.toString(), velocity, distance }));
-        })
-        .catch((error) => {
-          console.error('Failed to start engine:', error);
-        });
+    async (id: number) => {
+      try {
+        const { velocity, distance } = await startCarEngine(id);
+        await driveCarEngine(id);
+        dispatch(startRace({ id: id.toString(), velocity, distance }));
+      } catch (error) {
+        console.error('Failed to start or drive engine:', error);
+      }
     },
     [dispatch],
   );

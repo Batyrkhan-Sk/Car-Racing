@@ -1,7 +1,8 @@
 import { Car } from '../types/carTypes';
 import { setCars } from '../store/carSlice';
 import { AppDispatch } from '../store/store';
-import BASE_URL from './constants';
+import { BASE_URL } from '../constants';
+import { deleteWinner } from '../store/winnerSlice';
 
 export const getCars = () => async (dispatch: AppDispatch) => {
   try {
@@ -16,9 +17,11 @@ export const getCars = () => async (dispatch: AppDispatch) => {
 export const deleteCar = (id: number) => async (dispatch: AppDispatch) => {
   try {
     await fetch(`${BASE_URL}/garage/${id}`, { method: 'DELETE' });
+    await fetch(`${BASE_URL}/winners/${id}`, { method: 'DELETE' });
     dispatch(getCars());
+    dispatch(deleteWinner(id));
   } catch (error) {
-    console.error('Failed to delete car:', error);
+    console.error('Failed to delete car or winner:', error);
   }
 };
 

@@ -4,6 +4,8 @@ import { createCar, getCars } from '../api/cars';
 import { AppDispatch } from '../store/store';
 import generateRandomCars from '../utils/random';
 import { GenerateCarsProps } from '../types/generateCarsTypes';
+import { GENERATE_CARS_COUNT } from '../constants';
+import styles from '../styles/GenerateCars.module.css';
 
 export default function GenerateCars({ onCarsGenerated }: GenerateCarsProps) {
   const dispatch = useDispatch<AppDispatch>();
@@ -12,7 +14,7 @@ export default function GenerateCars({ onCarsGenerated }: GenerateCarsProps) {
   const handleGenerateCars = useCallback(async () => {
     setIsGenerating(true);
     try {
-      const randomCars = generateRandomCars(100);
+      const randomCars = generateRandomCars(GENERATE_CARS_COUNT);
       await Promise.all(randomCars.map((car) => dispatch(createCar(car.name, car.color))));
       await dispatch(getCars());
       onCarsGenerated();
@@ -28,16 +30,9 @@ export default function GenerateCars({ onCarsGenerated }: GenerateCarsProps) {
       type="button"
       onClick={handleGenerateCars}
       disabled={isGenerating}
-      style={{
-        padding: '8px 16px',
-        backgroundColor: '#3D5B59',
-        color: 'white',
-        border: 'none',
-        borderRadius: '4px',
-        cursor: 'pointer',
-      }}
+      className={styles.generateButton}
     >
-      {isGenerating ? 'Generating...' : 'Generate 100 Cars'}
+      {isGenerating ? 'Generating...' : `Generate ${GENERATE_CARS_COUNT} Cars`}
     </button>
   );
 }

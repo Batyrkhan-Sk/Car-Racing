@@ -1,6 +1,9 @@
 /* eslint-disable max-lines-per-function */
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { PaginationProps } from '../types/paginationTypes';
 import styles from '../styles/Pagination.module.css';
+import { PAGINATION_MAX_VISIBLE } from '../constants';
 
 export default function Pagination({
   currentPage,
@@ -11,14 +14,13 @@ export default function Pagination({
   if (totalPages <= 1) return null;
 
   const getVisiblePages = () => {
-    const maxVisiblePages = 5;
-    const halfVisible = Math.floor(maxVisiblePages / 2);
+    const halfVisible = Math.floor(PAGINATION_MAX_VISIBLE / 2);
 
     let startPage = Math.max(1, currentPage - halfVisible);
-    const endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+    const endPage = Math.min(totalPages, startPage + PAGINATION_MAX_VISIBLE - 1);
 
-    if (endPage - startPage + 1 < maxVisiblePages) {
-      startPage = Math.max(1, endPage - maxVisiblePages + 1);
+    if (endPage - startPage + 1 < PAGINATION_MAX_VISIBLE) {
+      startPage = Math.max(1, endPage - PAGINATION_MAX_VISIBLE + 1);
     }
 
     return Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i);
@@ -33,8 +35,9 @@ export default function Pagination({
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
         className={`${styles['pagination-btn']} ${styles['pagination-prev']}`}
+        aria-label="Previous page"
       >
-        ← Previous
+        <FontAwesomeIcon icon={faChevronLeft} />
       </button>
 
       {visiblePages[0] > 1 && (
@@ -82,8 +85,9 @@ export default function Pagination({
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
         className={`${styles['pagination-btn']} ${styles['pagination-next']}`}
+        aria-label="Next page"
       >
-        Next →
+        <FontAwesomeIcon icon={faChevronRight} />
       </button>
     </div>
   );

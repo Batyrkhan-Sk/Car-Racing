@@ -1,9 +1,11 @@
 /* eslint-disable max-lines-per-function */
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from '../store/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../store/store';
 import { startCarEngine, stopCarEngine } from '../api/engine';
 import { startMultipleRaces, stopRace, resetRaces } from '../store/raceSlice';
 import { resetFinishers } from '../store/winnerSlice';
+import styles from '../styles/RaceControls.module.css';
+import { RACE_START_ALL_LABEL, RACE_RESET_LABEL } from '../constants';
 
 interface RaceControlsProps {
   currentCars: { id: number; name: string; color: string }[];
@@ -11,6 +13,10 @@ interface RaceControlsProps {
 
 export default function RaceControls({ currentCars }: RaceControlsProps) {
   const dispatch = useDispatch<AppDispatch>();
+  const races = useSelector((state: RootState) => state.race.races);
+  const isRaceActive = Object.values(races).some(
+    (race) => race.status === 'started' || race.status === 'driving',
+  );
 
   const handleStartAll = async () => {
     try {
@@ -80,31 +86,17 @@ export default function RaceControls({ currentCars }: RaceControlsProps) {
       <button
         type="button"
         onClick={handleStartAll}
-        style={{
-          padding: '5px 10px',
-          backgroundColor: '#7EC8E3',
-          color: 'white',
-          border: 'none',
-          borderRadius: '4px',
-          cursor: 'pointer',
-          marginRight: '10px',
-        }}
+        disabled={isRaceActive}
+        className={`${styles.raceControlsBtn} ${styles.raceControlsStart}`}
       >
-        Start All
+        {RACE_START_ALL_LABEL}
       </button>
       <button
         type="button"
         onClick={handleResetAll}
-        style={{
-          padding: '5px 10px',
-          backgroundColor: '#FA26A0',
-          color: 'white',
-          border: 'none',
-          borderRadius: '4px',
-          cursor: 'pointer',
-        }}
+        className={`${styles.raceControlsBtn} ${styles.raceControlsReset}`}
       >
-        Reset
+        {RACE_RESET_LABEL}
       </button>
     </div>
   );

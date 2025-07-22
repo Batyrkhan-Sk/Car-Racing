@@ -1,0 +1,21 @@
+.raceControlsBtn {
+  padding: 5px 10px;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.raceControlsBtn:disabled {
+  background-color: #b0b0b0;
+  cursor: not-allowed;
+}
+
+.raceControlsStart {
+  background-color: #7EC8E3;
+  margin-right: 10px;
+}
+
+.raceControlsReset {
+  background-color: #FA26A0;
+}

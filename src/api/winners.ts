@@ -1,12 +1,12 @@
 import { Dispatch } from '@reduxjs/toolkit';
 import { Winner } from '../types/winnerTypes';
 import { setWinners, setTotalCount, setCurrentPage, setSort } from '../store/winnerSlice';
-import BASE_URL from './constants';
+import { DEFAULT_PAGE, BASE_URL, CARS_PER_PAGE } from '../constants';
 
 const fetchWinners = async (
   dispatch: Dispatch,
-  page = 1,
-  limit = 10,
+  page = DEFAULT_PAGE,
+  limit = CARS_PER_PAGE,
   sortBy: 'id' | 'wins' | 'time' = 'id',
   sortOrder: 'ASC' | 'DESC' = 'ASC',
 ) => {

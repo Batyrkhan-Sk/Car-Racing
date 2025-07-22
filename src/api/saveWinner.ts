@@ -1,4 +1,4 @@
-import BASE_URL from './constants';
+import { BASE_URL, HTTP_STATUS } from '../constants';
 
 const saveWinner = async (id: number, time: number): Promise<boolean> => {
   try {
@@ -6,7 +6,7 @@ const saveWinner = async (id: number, time: number): Promise<boolean> => {
       throw new Error('Invalid time value');
     }
     const response = await fetch(`${BASE_URL}/winners/${id}`);
-    if (response.status === 404) {
+    if (response.status === HTTP_STATUS.NOT_FOUND) {
       const postResponse = await fetch(`${BASE_URL}/winners`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

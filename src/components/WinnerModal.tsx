@@ -5,6 +5,12 @@ import { RootState } from '../store/store';
 import { Car } from '../types/carTypes';
 import { setCurrentWinner } from '../store/winnerSlice';
 import styles from '../styles/WinnerModal.module.css';
+import {
+  WINNER_MODAL_TIMEOUT,
+  WINNER_MODAL_TITLE,
+  WINNER_MODAL_WINNER_LABEL,
+  WINNER_MODAL_TIME_LABEL,
+} from '../constants';
 
 export default function WinnerModal() {
   const dispatch = useDispatch();
@@ -16,9 +22,7 @@ export default function WinnerModal() {
     if (currentWinner && winnerCar) {
       const timer = setTimeout(() => {
         dispatch(setCurrentWinner(null));
-        // eslint-disable-next-line no-magic-numbers
-      }, 3000);
-
+      }, WINNER_MODAL_TIMEOUT);
       return () => clearTimeout(timer);
     }
     return undefined;
@@ -47,10 +51,14 @@ export default function WinnerModal() {
       tabIndex={0}
     >
       <div className={styles.modalWindow}>
-        <h2 className={styles.modalTitle}>Race Finished!</h2>
+        <h2 className={styles.modalTitle}>{WINNER_MODAL_TITLE}</h2>
         <div className={styles.winnerInfo}>
-          <div className={styles.winnerName}>Winner: {winnerCar.name}</div>
-          <div className={styles.winnerTime}>Time: {currentWinner.time}s</div>
+          <div className={styles.winnerName}>
+            {WINNER_MODAL_WINNER_LABEL} {winnerCar.name}
+          </div>
+          <div className={styles.winnerTime}>
+            {WINNER_MODAL_TIME_LABEL} {currentWinner.time}s
+          </div>
         </div>
       </div>
     </div>
