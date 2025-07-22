@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/Car-Racing/static/css/main.12e5647d.css",
+    "main.js": "/Car-Racing/static/js/main.040d8cbb.js",
+    "index.html": "/Car-Racing/index.html",
+    "main.12e5647d.css.map": "/Car-Racing/static/css/main.12e5647d.css.map",
+    "main.040d8cbb.js.map": "/Car-Racing/static/js/main.040d8cbb.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.12e5647d.css",
+    "static/js/main.040d8cbb.js"
+  ]
+}
