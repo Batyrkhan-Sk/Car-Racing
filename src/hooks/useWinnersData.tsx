@@ -4,7 +4,7 @@ import { RootState, AppDispatch } from '../store/store';
 import fetchWinners from '../api/winners';
 import { setSort, setCurrentPage } from '../store/winnerSlice';
 import { getCars } from '../api/cars';
-import { CARS_PER_PAGE } from '../constants';
+import { WINNERS_PER_PAGE } from '../constants';
 
 type SortColumn = 'id' | 'wins' | 'time';
 
@@ -15,11 +15,11 @@ export default function useWinnersData() {
   );
   const allCars = useSelector((state: RootState) => state.car.cars);
 
-  const totalPages = Math.ceil(totalCount / CARS_PER_PAGE);
+  const totalPages = Math.ceil(totalCount / WINNERS_PER_PAGE);
 
   useEffect(() => {
     dispatch(getCars());
-    fetchWinners(dispatch, currentPage, CARS_PER_PAGE, sortBy, sortOrder);
+    fetchWinners(dispatch, currentPage, WINNERS_PER_PAGE, sortBy, sortOrder);
   }, [currentPage, sortBy, sortOrder, dispatch]);
 
   const handleSort = (column: SortColumn) => {

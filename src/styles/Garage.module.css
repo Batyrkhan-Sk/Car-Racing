@@ -4,11 +4,11 @@
   max-width: 1600px;
   margin: 0 auto;
   padding: 20px;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Open Sans', sans-serif;
 }
 
 .garage h1 {
-  font-family: 'Orbitron', monospace;
+  font-family: 'Open Sans', sans-serif;
   font-size: 28px;
   font-weight: 700;
   color: #333;
@@ -22,4 +22,36 @@
 
 .garage > *:last-child {
   margin-bottom: 0;
+}
+
+.emptyGarage {
+  font-family: 'Open Sans', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  margin: 20px auto;
+  border: 2px dashed #dee2e6;
+  max-width: 600px;
+}
+
+
+.emptyGarage h2 {
+  font-family: 'Open Sans', sans-serif;
+  color: #6c757d;
+  font-size: 2rem;
+  margin-bottom: 12px;
+  font-weight: 500;
+}
+
+.emptyGarage p {
+  color: #868e96;
+  font-size: 1.1rem;
+  max-width: 400px;
+  line-height: 1.5;
+  margin: 0;
 }

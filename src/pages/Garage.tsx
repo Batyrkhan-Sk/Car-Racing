@@ -7,7 +7,6 @@ import { AppDispatch, RootState } from '../store/store';
 import { startRace, stopRace, resetRaces } from '../store/raceSlice';
 import useCarForm from '../hooks/useCarForm';
 import GenerateCars from '../components/GenerateCars';
-
 import CarForm from '../components/CarForm';
 import CarList from '../components/CarList';
 import Navigation from '../components/Navigation';
@@ -42,8 +41,11 @@ export default function Garage() {
 
   useEffect(() => {
     const { totalPages } = paginationData;
-    if (currentPage > totalPages && totalPages > 0) {
-      setCurrentPage(1);
+
+    if (cars.length > 0 && currentPage > 1 && paginationData.currentCars.length === 0) {
+      setCurrentPage(currentPage - 1);
+    } else if (currentPage > totalPages && totalPages > 0) {
+      setCurrentPage(totalPages);
     }
   }, [cars.length, currentPage, paginationData]);
 
@@ -105,6 +107,29 @@ export default function Garage() {
   const handlePageChange = useCallback((pageNumber: number) => {
     setCurrentPage(pageNumber);
   }, []);
+
+  if (cars.length === 0) {
+    return (
+      <div className={styles.garage}>
+        <h1>Garage (0 cars)</h1>
+        <Navigation />
+        <CarForm
+          name={name}
+          color={color}
+          setName={setName}
+          setColor={setColor}
+          editId={editId}
+          handleCreate={handleCreate}
+          handleUpdate={handleUpdate}
+        />
+        <GenerateCars onCarsGenerated={() => setCurrentPage(1)} />
+        <div className={styles.emptyGarage}>
+          <h2>No Cars</h2>
+          <p>Your garage is empty. Create a new car or generate new ones</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.garage}>

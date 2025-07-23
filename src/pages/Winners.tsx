@@ -14,11 +14,11 @@ export default function Winners() {
   return (
     <div className={styles.container}>
       <Navigation />
-      <h2>Winners</h2>
+      <h2>Winners ({winners.length} winners)</h2>
 
-      <table className={styles.table}>
+      <table className={styles.table} role="table" aria-label="Race winners">
         <thead>
-          <tr>
+          <tr role="row">
             <SortableHeader
               column="id"
               label="ID"
@@ -26,8 +26,8 @@ export default function Winners() {
               sortOrder={sortOrder}
               onSort={handleSort}
             />
-            <th>Car</th>
-            <th>Name</th>
+            <th scope="col">Car</th>
+            <th scope="col">Name</th>
             <SortableHeader
               column="wins"
               label="Wins"
@@ -45,19 +45,33 @@ export default function Winners() {
           </tr>
         </thead>
         <tbody>
-          {winners.map((winner) => {
-            const car = allCars.find((c: Car) => c.id === winner.id);
-            return <WinnersTableRow key={winner.id} winner={winner} car={car} />;
-          })}
+          {winners.length === 0 ? (
+            <tr>
+              <td colSpan={5} className={styles.emptyState}>
+                No winners yet
+              </td>
+            </tr>
+          ) : (
+            winners.map((winner) => {
+              const car = allCars.find((c: Car) => c.id === winner.id);
+              if (!car) {
+                console.warn(`Car with ID ${winner.id} not found`);
+                return null;
+              }
+              return <WinnersTableRow key={winner.id} winner={winner} car={car} />;
+            })
+          )}
         </tbody>
       </table>
 
-      <Pagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        onPageChange={changePage}
-        className={styles.pagination}
-      />
+      {totalPages > 1 && (
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={changePage}
+          className={styles.pagination}
+        />
+      )}
     </div>
   );
 }
